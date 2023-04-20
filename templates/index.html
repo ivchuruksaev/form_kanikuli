@@ -1,0 +1,185 @@
+﻿
+<style>
+    .form-img {
+        position: absolute;
+        top: 30;
+        right: 30;
+        width: 200px;
+        height: 200px;
+    }
+</style>
+
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Форма заявления на участие в группе дневного ухода "Веселые каникулы"</h1>
+    <img src="C:/Users/Ivan/source/repos/Form/Form/templates/OBlogo.jpg" alt="logo" class="form-img">
+
+    {% if not success %}
+    <form method="POST" action="{{ url_for('index') }}">
+        <!-- Раздел с информацией о родителе -->
+        <h3>Информация о родителе</h3>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="parent_last_name">Фамилия</label>
+                <input type="text" class="form-control" id="parent_last_name" name="parent_last_name" required pattern="[A-Za-zА-Яа-яёЁ\s]+">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="parent_first_name">Имя</label>
+                <input type="text" class="form-control" id="parent_first_name" name="parent_first_name" required pattern="[A-Za-zА-Яа-яёЁ\s]+">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="parent_patronymic">Отчество</label>
+                <input type="text" class="form-control" id="parent_patronymic" name="parent_patronymic" pattern="[A-Za-zА-Яа-яёЁ\s]*">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="parent_no_patronymic" name="parent_no_patronymic">
+                    <label class="form-check-label" for="parent_no_patronymic">
+                        Нет отчества
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="passport_series">Серия паспорта</label>
+                <input type="text" class="form-control" id="passport_series" name="passport_series" required pattern="\d{4}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="passport_number">Номер паспорта</label>
+                <input type="text" class="form-control" id="passport_number" name="passport_number" required pattern="\d{6}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="passport_issued_by">Кем выдан</label>
+                <input type="text" class="form-control" id="passport_issued_by" name="passport_issued_by" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="registration">Регистрация:</label>
+            <input type="text" name="registration" id="registration" required>
+        </div>
+
+        <!-- Раздел с информацией о ребенке -->
+        <h3>Информация о ребенке</h3>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="child_last_name">Фамилия</label>
+                <input type="text" class="form-control" id="child_last_name" name="child_last_name" required pattern="[A-Za-zА-Яа-яёЁ\s]+">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="child_first_name">Имя</label>
+                <input type="text" class="form-control" id="child_first_name" name="child_first_name" required pattern="[A-Za-zА-Яа-яёЁ\s]+">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="child_patronymic">Отчество</label>
+                <input type="text" class="form-control" id="child_patronymic" name="child_patronymic" pattern="[A-Za-zА-Яа-яёЁ\s]*">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="child_no_patronymic" name="child_no_patronymic">
+                    <label class="form-check-label" for="child_no_patronymic">
+                        Нет отчества
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="child_gender">Пол ребенка</label>
+            <select class="form-control" id="child_gender" name="child_gender" required>
+                <option value="">Выберите пол ребенка</option>
+                <option value="masc">Мужской</option>
+                <option value="femn">Женский</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="child_birth_date">Дата рождения ребенка</label>
+            <input type="date" class="form-control" id="child_birth_date" name="child_birth_date" required>
+        </div>
+        <!-- Раздел с контактной информацией -->
+        <h3>Контактная информация</h3>
+        <div class="form-group">
+            <label for="phone">Контактный номер телефона</label>
+            <input type="tel" class="form-control" id="phone" name="phone" required pattern="\+7\d{10}">
+        </div>
+        <div class="form-group">
+            <label for="residence_info">Сведения о месте жительства ребенка и заявителя</label>
+            <textarea class="form-control" id="residence_info" name="residence_info" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="emergency_phone">Номер телефона в случае экстренной ситуации:</label>
+            <input type="text" name="emergency_phone" id="emergency_phone" required>
+        </div>
+
+        <!-- Раздел с булевыми полями -->
+        <hr>
+        <h3>Согласие</h3>
+        <div class="mb-3">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="medical_agreement" value="true">
+                Согласие на оказание первой медицинской помощи, а также на иные экстренные меры, необходимые для сохранения жизни и здоровья ребенка, согласно Приказа Министерства здравоохранения Российской Федерации от 20 декабря 2012 г. №1177н
+            </label>
+        </div>
+        <div class="mb-3">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="leisure_activities_agreement" value="true">
+                Согласие на участие моего ребенка в досуговых мероприятиях группы дневного ухода «Веселые каникулы»
+            </label>
+        </div>
+        <div class="mb-3">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="mobile_agreement" value="true">
+                Согласие на возможное ограничение доступа ребенка в использовании мобильных устройств, а также средств доступа к сети Интернет
+            </label>
+        </div>
+        <div class="mb-3">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="rules_agreement" value="true">
+                Согласие на выполнение ребенком Правил участия в группах дневного ухода «Веселые каникулы»
+            </label>
+        </div>
+        <div class="mb-3">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="notOANO_agreement" value="true">
+                Согласие на выполнение требований организаторов групп дневного ухода «Веселые каникулы» об обеспечении	сохранности	личного	детского	имущества.	Согласен,	что ОАНО «Образовательный центр Эврика» не несет ответственности за указанное имущество
+            </label>
+        </div>
+
+        <h3>Способ добирания ребенка из лагеря</h3>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="transportation" id="transportation1" value="1" required>
+            <label class="form-check-label" for="transportation1">
+                Самостоятельно возвращаться домой к месту проживания, находящемуся за пределами ЖК «Предгорья Зимы»
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="transportation" id="transportation2" value="2">
+            <label class="form-check-label" for="transportation2">
+                Самостоятельно возвращаться домой к месту проживания в ЖК «Предгорья Зимы»
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="transportation" id="transportation3" value="3">
+            <label class="form-check-label" for="transportation3">
+                На транспорте Компании, следующим по утвержденному маршруту. Обязуюсь встречать ребенка на остановке (необходимое подчеркнуть): по ходу движения автобуса по городу Южно-Сахалинск: Отдалённая, Есенина, Плаза, МТС, Янтарь, Поповича, СЕБ1.
+            </label>
+        </div>
+        <!-- Конец формы -->
+        <hr>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9">
+                <button class="btn btn-primary" type="submit">
+                    Отправить
+                </button>
+            </div>
+        </div>
+    </form>
+    {% else %}
+    <h2>Форма успешно отправлена!</h2>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+
+
+
+

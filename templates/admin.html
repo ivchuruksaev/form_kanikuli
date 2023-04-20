@@ -1,0 +1,113 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .child-case-input {
+            width: 300px; /* Измените это значение, чтобы увеличить размер текстового поля */
+            font-size: 120%;
+        }
+        .parent-name {
+            font-weight: bold;
+            font-size: 140%;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Список родителей</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ФИО</th>
+                <th>ФИО ребенка (падежи)</th>
+                <th>Дата начала договора</th>
+                <th>Дата окончания договора</th>
+                <th>Сохранить</th>
+                <th>Скачать договор</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for parent in parents %}
+            <tr>
+                <form action="{{ url_for('update_parent_info') }}" method="post">
+                    <input type="hidden" name="parent_id" value="{{ parent.id }}">
+                <td>
+                    <span class="parent-name">{{ parent.parent_last_name }} {{ parent.parent_first_name }} {{ parent.parent_patronymic }}</span><br>
+                    <input class="child-case-input" type="text" name="parent_name_rp" id="parent_name_rp_{{ parent.id }}" value="{{ parent.parent_name_rp }}">
+                </td>
+                <td>
+                    <label for="child_name_ip_{{ parent.id }}">Ребенок ИП:</label>
+                    <input class="child-case-input" type="text" name="child_name_ip" id="child_name_ip_{{ parent.id }}" value="{{ parent.child_name_ip }}">
+                    <br>
+                    <label for="child_name_rp_{{ parent.id }}">Ребенок РП:</label>
+                    <input class="child-case-input" type="text" name="child_name_rp" id="child_name_rp_{{ parent.id }}" value="{{ parent.child_name_rp }}">
+                    <br>
+                    <label for="child_name_vp_{{ parent.id }}">Ребенок ВП:</label>
+                    <input class="child-case-input" type="text" name="child_name_vp" id="child_name_vp_{{ parent.id }}" value="{{ parent.child_name_vp }}">
+                    <br>
+                    <label for="child_name_dp_{{ parent.id }}">Ребенок ДП:</label>
+                    <input class="child-case-input" type="text" name="child_name_dp" id="child_name_dp_{{ parent.id }}" value="{{ parent.child_name_dp }}">
+                    <br>
+                    <label for="child_name_tp_{{ parent.id }}">Ребенок ТП:</label>
+                    <input class="child-case-input" type="text" name="child_name_tp" id="child_name_tp_{{ parent.id }}" value="{{ parent.child_name_tp }}">
+                </td>
+                <td>
+                    <label for="contract_start_{{ parent.id }}">Дата начала:</label>
+                    <input type="date" name="contract_start" id="contract_start_{{ parent.id }}" value="{{ parent.contract_start }}">
+                </td>
+                <td>
+                    <label for="contract_end_{{ parent.id }}">Дата окончания:</label>
+                    <input type="date" name="contract_end" id="contract_end_{{ parent.id }}" value="{{ parent.contract_end }}">
+                </td>
+                <td>
+                    <input type="submit" value="Сохранить">
+                </td>
+                </form>
+                <td>
+                    <a href="{{ url_for('download_contract', parent_id=parent.id) }}">Скачать договор</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
